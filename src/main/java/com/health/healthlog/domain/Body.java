@@ -5,9 +5,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
+import lombok.Getter;
 
+@Getter
 @Entity
-public class Body {
+public class Body extends BaseTimeEntity {
     // - 체중
     // - 골격근
     // - 체지방
@@ -20,6 +22,4 @@ public class Body {
     private double muscleMass;
 
     private double fatMass;
-
-    private LocalDateTime createdAt;
 }
