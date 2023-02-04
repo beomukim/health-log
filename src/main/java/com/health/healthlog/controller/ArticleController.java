@@ -12,7 +12,7 @@ public class ArticleController {
     @Autowired
     private ArticleRepository articleRepository;
 
-    @GetMapping("/")
+    @GetMapping("/articles")
     public @ResponseBody Iterable<Article> getAllArticle() {
         return articleRepository.findAll();
     }
