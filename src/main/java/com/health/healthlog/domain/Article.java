@@ -6,24 +6,31 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import java.time.LocalDateTime;
+import jakarta.persistence.OrderBy;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
+@ToString
 @Entity
 public class Article extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @OrderBy("id")
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private final List<Training> trainings = new ArrayList<>();
 
+    @Setter
     private String content;
+
+    protected Article() {}
+
+    public Article(String content) {
+        this.content = content;
+    }
 }

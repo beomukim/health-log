@@ -43,4 +43,6 @@ public class Training {
 
     @Column(name = "counting")
     private Integer setCount;
+
+    protected Training() {}
 }

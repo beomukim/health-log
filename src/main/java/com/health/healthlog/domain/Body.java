@@ -22,4 +22,6 @@ public class Body extends BaseTimeEntity {
     private double muscleMass;
 
     private double fatMass;
+
+    protected Body() {}
 }
