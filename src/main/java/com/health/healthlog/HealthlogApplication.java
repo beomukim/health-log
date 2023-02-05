@@ -2,13 +2,12 @@ package com.health.healthlog;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@EnableJpaAuditing
+@EnableJpaAuditing // created_at, updated_at default 설정
 @SpringBootApplication
-@RestController
+@ConfigurationPropertiesScan
 public class HealthlogApplication {
 
 	public static void main(String[] args) {
