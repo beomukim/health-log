@@ -66,11 +66,11 @@ public class JpaRepositoryTest {
     @Test
     void givenTestData_whenDeleting_thenWorksFine() {
         // Given
-        Article article = articleRepository.findById(1L).orElseThrow(() -> new RuntimeException("해당 id의 article이 없습니다."));
+        Article article = articleRepository.findById(13L).orElseThrow();
 
         long previousArticleCount = articleRepository.count();
         long previousTrainingCommentCount = trainingRepository.count();
-//        int deletedCommentsSize = article.getTrainings().size();
+        int deletedCommentsSize = article.getTrainings().size();
         //TODO: LazyInitializationException 발생
 
         // When
@@ -78,6 +78,6 @@ public class JpaRepositoryTest {
 
         // Then
         assertThat(articleRepository.count()).isEqualTo(previousArticleCount - 1);
-//        assertThat(trainingRepository.count()).isEqualTo(previousTrainingCommentCount - deletedCommentsSize);
+        assertThat(trainingRepository.count()).isEqualTo(previousTrainingCommentCount - deletedCommentsSize);
     }
 }
