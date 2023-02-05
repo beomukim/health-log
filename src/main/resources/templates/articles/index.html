@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>health log</title>
+</head>
+<body>
+    <header th:replace="header :: header"></header>
+    <main>
+        검색창
+        <form>
+            <label for="search-type" hidden>카테고리</label>
+            <select id="search-type" name="search-type">
+                <option>트레이닝</option>
+                <option>내용</option>
+            </select>
+            <label for="search-value" hidden></label>
+            <input id="search-value" type="search" placeholder="검색어.." name="search-value">
+            <button type="submit">검색</button>
+        </form>
+        테이블
+        <table>
+            <thead>
+            <tr>
+                <th>운동 기록</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><a href="/articles/{id}">날짜</a></td>
+            </tr>
+            <tr>
+                <td><a href="/articles/{id}">날짜</a></td>
+            </tr>
+            </tbody>
+        </table>
+        <nav>
+            <table>
+                <tr>
+                    <td>previous</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>next</td>
+                </tr>
+            </table>
+        </nav>
+    </main>
+
+    <footer th:replace="footer :: footer"></footer>
+
+</body>
+</html>
