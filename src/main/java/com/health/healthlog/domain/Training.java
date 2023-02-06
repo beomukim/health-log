@@ -17,19 +17,13 @@ import org.hibernate.annotations.Fetch;
 @Getter
 @Entity
 public class Training {
-    // 분류 (맨몸, 머신, 프리웨이트)
-    // - 부위 (등, 가슴, 하체, etc...)
-    // - 무게
-    // - 개수
-    // - 세트
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Article article;
 
     @Enumerated(EnumType.STRING)
