@@ -6,23 +6,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import com.health.healthlog.service.ArticleService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
-@SpringBootTest
+@WebMvcTest(ArticleController.class)
 public class ArticleControllerTest {
 
-    private final MockMvc mvc;
+    @Autowired
+    private MockMvc mvc;
 
-    public ArticleControllerTest(@Autowired MockMvc mvc) {
-        this.mvc = mvc;
-    }
+    @MockBean
+    private ArticleService articleService;
+
 
     @DisplayName("게시글 리스트")
     @Test
