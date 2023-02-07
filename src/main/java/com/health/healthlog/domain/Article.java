@@ -34,4 +34,8 @@ public class Article extends BaseTimeEntity {
     public Article(String content) {
         this.content = content;
     }
+
+    public static Article of(String content) {
+        return new Article(content);
+    }
 }

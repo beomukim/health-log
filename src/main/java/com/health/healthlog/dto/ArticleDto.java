@@ -12,11 +12,15 @@ public record ArticleDto(
         return new ArticleDto(id, content, createdAt);
     }
 
+    public static ArticleDto of(String content) {
+        return new ArticleDto(null, content, null);
+    }
+
     public static ArticleDto from(Article article) {
-        return ArticleDto.of(
-                article.getId(),
-                article.getContent(),
-                article.getCreatedAt()
-        );
+        return new ArticleDto(article.getId(), article.getContent(), article.getCreatedAt());
+    }
+
+    public Article toEntity() {
+        return Article.of(content);
     }
 }
