@@ -3,7 +3,9 @@ package com.health.healthlog.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.health.healthlog.domain.Article;
+import com.health.healthlog.domain.Training;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,16 @@ public class JpaRepositoryTest {
 
         //then
         assertThat(articles).isNotNull().hasSize(2);
+    }
+
+    @DisplayName("select 테스트")
+    @Test
+    void whenSelectingById_thenWorksFine() {
+        //when
+        Article article = articleRepository.findById(14L).orElseThrow();
+        List<Training> trainings = article.getTrainings();
+        //then
+        assertThat(trainings).isNotNull().hasSize(2);
     }
 
     @DisplayName("insert 테스트")
@@ -66,12 +78,11 @@ public class JpaRepositoryTest {
     @Test
     void givenTestData_whenDeleting_thenWorksFine() {
         // Given
-        Article article = articleRepository.findById(13L).orElseThrow();
+        Article article = articleRepository.findById(15L).orElseThrow();
 
         long previousArticleCount = articleRepository.count();
         long previousTrainingCommentCount = trainingRepository.count();
         int deletedCommentsSize = article.getTrainings().size();
-        //TODO: LazyInitializationException 발생
 
         // When
         articleRepository.delete(article);

@@ -10,6 +10,7 @@ import static org.mockito.Mockito.mock;
 import com.health.healthlog.domain.Article;
 import com.health.healthlog.domain.type.SearchType;
 import com.health.healthlog.dto.ArticleDto;
+import com.health.healthlog.dto.ArticleWithTrainingsDto;
 import com.health.healthlog.repository.ArticleRepository;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -96,5 +97,22 @@ public class ArticleServiceTest {
 
         // Then
         then(articleRepository).should().deleteById(1L);
+    }
+
+    @DisplayName("게시글 ID로 조회하면, 해당 게시글 트레이닝이 포함된 게시글 반환한다.")
+    @Test
+    void givenArticleId_whenSearchingArticleWithTrainings_thenReturnsArticleWithTrainings() {
+        // Given
+        Long articleId = 1L;
+        Article article = new Article("content");
+        given(articleRepository.findById(articleId)).willReturn(Optional.of(article));
+
+        // When
+        ArticleWithTrainingsDto dto = sut.getArticleWithTrainings(articleId);
+
+        // Then
+        assertThat(dto)
+                .hasFieldOrPropertyWithValue("content", article.getContent());
+        then(articleRepository).should().findById(articleId);
     }
 }
