@@ -3,6 +3,7 @@ package com.health.healthlog.service;
 import com.health.healthlog.domain.Article;
 import com.health.healthlog.domain.type.SearchType;
 import com.health.healthlog.dto.ArticleDto;
+import com.health.healthlog.dto.ArticleWithTrainingsDto;
 import com.health.healthlog.repository.ArticleRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
@@ -28,6 +29,13 @@ public class ArticleService {
     public ArticleDto searchArticle(long articleId) {
         return articleRepository.findById(articleId)
                 .map(ArticleDto::from)
+                .orElseThrow(() -> new EntityNotFoundException("게시글이 없습니다 - articleId: " + articleId));
+    }
+
+    @Transactional(readOnly = true)
+    public ArticleWithTrainingsDto getArticleWithTrainings(Long articleId) {
+        return articleRepository.findById(articleId)
+                .map(ArticleWithTrainingsDto::from)
                 .orElseThrow(() -> new EntityNotFoundException("게시글이 없습니다 - articleId: " + articleId));
     }
 

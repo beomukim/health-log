@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<thlogic>
+    <attr sel="#header" th:replace="header :: header" />
+    <attr sel="#footer" th:replace="footer :: footer" />
+
+    <attr sel="#article-main" th:object="${article}">
+        <attr sel="#article-trainings" th:remove="all-but-first">
+            <attr sel="li[0]" th:each="articleTraining : ${articleTrainings}">
+                <attr sel="div/strong" th:text="${articleTraining.name}" />
+                <attr sel="#training-number" th:text="${articleTraining.number}" />
+                <attr sel="#training-counting" th:text="${articleTraining.setCount}" />
+            </attr>
+        </attr>
+        <attr sel="#article-content/pre" th:text="*{content}" />
+    </attr>
+</thlogic>

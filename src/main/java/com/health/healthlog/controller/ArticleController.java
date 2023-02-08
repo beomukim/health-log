@@ -2,12 +2,15 @@ package com.health.healthlog.controller;
 
 import com.health.healthlog.domain.type.SearchType;
 import com.health.healthlog.dto.ArticleDto;
+import com.health.healthlog.dto.ArticleWithTrainingsDto;
+import com.health.healthlog.dto.TrainingDto;
 import com.health.healthlog.service.ArticleService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -27,5 +30,14 @@ public class ArticleController {
         List<ArticleDto> articles = articleService.searchArticles(searchType, searchValue);
         map.addAttribute("articles", articles);
         return "articles/index";
+    }
+
+    @GetMapping("/{articleId}")
+    public String article(@PathVariable Long articleId, ModelMap map) {
+        ArticleWithTrainingsDto article = articleService.getArticleWithTrainings(articleId);
+        List<TrainingDto> articleTrainings = article.trainingDtos();
+        map.addAttribute("article", article);
+        map.addAttribute("articleTrainings", articleTrainings);
+        return "articles/detail";
     }
 }
