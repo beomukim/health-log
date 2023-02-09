@@ -5,15 +5,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.willDoNothing;
-import static org.mockito.Mockito.mock;
 
 import com.health.healthlog.domain.Article;
-import com.health.healthlog.domain.type.SearchType;
 import com.health.healthlog.dto.ArticleDto;
 import com.health.healthlog.dto.ArticleWithTrainingsDto;
 import com.health.healthlog.repository.ArticleRepository;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,6 +18,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @DisplayName("비즈니스 로직 -게시글")
 @ExtendWith(MockitoExtension.class)
@@ -34,14 +33,15 @@ public class ArticleServiceTest {
     @Test
     void givenSearchParameters_whenSearchingArticles_thenReturnsArticleList() {
         // Given
-        List<Article> result = List.of(new Article("1"), new Article("2"), new Article("3"));
-        given(articleRepository.findAll()).willReturn(result);
+        Pageable pageable = Pageable.ofSize(20);
+        given(articleRepository.findAll(pageable)).willReturn(Page.empty());
 
         // When
-        List<ArticleDto> articles = sut.searchArticles(SearchType.CONTENT, "search keyword");
+        Page<ArticleDto> articles = sut.searchArticles(null, null, pageable);
 
         // Then
-        assertThat(articles).isNotNull().hasSize(3);
+        assertThat(articles).isEmpty();
+        then(articleRepository).should().findAll(pageable);
     }
 
     @DisplayName("게시글을 조회하면, 게시글을 반환한다.")
