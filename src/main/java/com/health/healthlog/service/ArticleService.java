@@ -9,6 +9,8 @@ import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +23,8 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
 
     @Transactional(readOnly = true)
-    public List<ArticleDto> searchArticles(SearchType title, String search_keyword) {
-        return articleRepository.findAll().stream().map(ArticleDto::from).toList();
+    public Page<ArticleDto> searchArticles(SearchType searchType, String searchKeyword, Pageable pageable) {
+        return articleRepository.findAll(pageable).map(ArticleDto::from);
     }
 
     @Transactional(readOnly = true)
