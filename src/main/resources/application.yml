@@ -11,3 +11,7 @@ spring:
       hibernate:
         ddl-auto: create
         format_sql: true
+
+  data.rest:
+    base-path: /api
+    default-page-size: 10
