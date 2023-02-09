@@ -3,6 +3,16 @@
     <attr sel="#header" th:replace="header :: header" />
     <attr sel="#footer" th:replace="footer :: footer" />
 
+    <attr sel="#search-type" th:remove="all-but-first">
+        <attr sel="option[0]"
+              th:each="searchType : ${searchTypes}"
+              th:value="${searchType.name}"
+              th:text="${searchType.description}"
+              th:selected="${param.searchType != null && (param.searchType.toString == searchType.name)}"
+        />
+    </attr>
+    <attr sel="#search-value" th:value="${param.searchValue}" />
+
     <attr sel="#article-table">
         <attr sel="tbody" th:remove="all-but-first">
             <attr sel="tr[0]" th:each="article : ${articles}">
