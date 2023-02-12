@@ -22,6 +22,9 @@ public class Training {
     @ManyToOne(optional = false)
     private Article article;
 
+    @ManyToOne(optional = false)
+    private UserAccount userAccount;
+
     @Enumerated(EnumType.STRING)
     private BodyPart bodyPart;
 

@@ -6,6 +6,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import java.util.ArrayList;
@@ -25,6 +26,9 @@ public class Article extends BaseTimeEntity {
     @OrderBy("id")
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private final List<Training> trainings = new ArrayList<>();
+
+    @ManyToOne(optional = false)
+    private UserAccount userAccount;
 
     @Setter
     private String content;
