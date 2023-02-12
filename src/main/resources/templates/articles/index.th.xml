@@ -41,4 +41,5 @@
               th:class="'page-link' + (${articles.number} >= ${articles.totalPages - 1} ? ' disabled' : '')"
         />
     </attr>
+    <attr sel="#body-page/a" th:href="@{'/body'}" />
 </thlogic>
