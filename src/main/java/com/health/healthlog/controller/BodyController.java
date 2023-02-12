@@ -1,19 +1,25 @@
 package com.health.healthlog.controller;
 
 import com.health.healthlog.domain.Body;
-import com.health.healthlog.repository.BodyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.health.healthlog.service.BodyService;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+@RequiredArgsConstructor
+@RequestMapping("/body")
 @Controller
 public class BodyController {
-    @Autowired
-    private BodyRepository bodyRepository;
 
-    @GetMapping("/body")
-    public @ResponseBody Iterable<Body> getAllBody() {
-        return bodyRepository.findAll();
+    private final BodyService bodyService;
+
+    @GetMapping
+    public String getAllBody(ModelMap map) {
+        List<Body> bodies = bodyService.searchBodies();
+        map.addAttribute("bodies", bodies);
+        return "body/index";
     }
 }
