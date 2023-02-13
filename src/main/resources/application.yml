@@ -16,3 +16,8 @@ spring:
   data.rest:
     base-path: /api
     default-page-size: 10
+
+  security:
+    user:
+      name: beomu
+      password: 1234
