@@ -9,4 +9,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource
 public interface ArticleRepository extends JpaRepository<Article, Long> {
     Page<Article> findByContentContaining(String searchKeyword, Pageable pageable);
+
+    void deleteByIdAndUserAccount_UserId(long articleId, String userId);
 }

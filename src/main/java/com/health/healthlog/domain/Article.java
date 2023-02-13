@@ -35,11 +35,12 @@ public class Article extends BaseTimeEntity {
 
     protected Article() {}
 
-    public Article(String content) {
+    public Article(UserAccount userAccount, String content) {
+        this.userAccount = userAccount;
         this.content = content;
     }
 
-    public static Article of(String content) {
-        return new Article(content);
+    public static Article of(UserAccount userAccount, String content) {
+        return new Article(userAccount, content);
     }
 }
