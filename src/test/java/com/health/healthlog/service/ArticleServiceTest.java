@@ -79,8 +79,6 @@ public class ArticleServiceTest {
         then(articleRepository).should().save(any(Article.class));
     }
 
-    // TODO
-    @Disabled
     @DisplayName("게시글의 ID와 수정 정보를 입력하면, 게시글을 수정한다")
     @Test
     void givenModifiedArticleInfo_whenUpdatingArticle_thenUpdatesArticle() {
@@ -138,7 +136,7 @@ public class ArticleServiceTest {
                 "password",
                 "beomu@email.com",
                 "beomu",
-                null
+                "This is memo"
         );
     }
 
@@ -152,7 +150,7 @@ public class ArticleServiceTest {
         return UserAccountDto.of(
                 "beomu",
                 "password",
-                "beomu@mail.com",
+                "beomu@email.com",
                 "beomu",
                 "This is memo",
                 LocalDateTime.now(),
