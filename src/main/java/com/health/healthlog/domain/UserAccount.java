@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -48,5 +49,24 @@ public class UserAccount extends BaseTimeEntity {
 
     public static UserAccount of(String userId, String userPassword, String email, String nickname, String memo) {
         return new UserAccount(userId, userPassword, email, nickname, memo);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        UserAccount that = (UserAccount) o;
+        return Objects.equals(userId, that.userId) && Objects.equals(userPassword, that.userPassword)
+                && Objects.equals(email, that.email) && Objects.equals(nickname, that.nickname)
+                && Objects.equals(memo, that.memo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, userPassword, email, nickname, memo);
     }
 }
