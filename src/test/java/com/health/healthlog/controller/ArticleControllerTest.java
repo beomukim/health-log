@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import com.health.healthlog.config.SecurityConfig;
 import com.health.healthlog.domain.type.SearchType;
 import com.health.healthlog.dto.ArticleWithTrainingsDto;
 import com.health.healthlog.service.ArticleService;
@@ -19,17 +20,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
+@Import(SecurityConfig.class)
 @WebMvcTest(ArticleController.class)
 public class ArticleControllerTest {
 
@@ -41,17 +43,6 @@ public class ArticleControllerTest {
 
     @MockBean
     private PaginationService paginationService;
-
-
-    @DisplayName("게시글 리스트")
-    @Test
-    public void givenNothing_whenRequestingArticlesView_thenReturnsArticlesView() throws Exception {
-        mvc.perform(get("/articles"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andExpect(view().name("articles/index"))
-                .andExpect(model().attributeExists("articles"));
-    }
 
     @DisplayName("[view][GET] 게시글 페이지 - 정상 호출")
     @Test
@@ -101,5 +92,16 @@ public class ArticleControllerTest {
                 .andExpect(model().attributeExists("searchTypes"));
         then(articleService).should().searchArticles(eq(searchType), eq(searchValue), any(Pageable.class));
         then(paginationService).should().getPaginationBarNumbers(anyInt(), anyInt());
+    }
+
+    @DisplayName("[view][GET] 로그인 페이지")
+    @Test
+    public void givenNothing_whenTryingToLogin_thenReturnsLoginView() throws Exception {
+        //Given
+
+        //when & then
+        mvc.perform(get("/login"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML));
     }
 }
