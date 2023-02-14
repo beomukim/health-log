@@ -13,6 +13,7 @@ spring:
         format_sql: true
     open-in-view: false
 
+  sql.init.mode: never
   data.rest:
     base-path: /api
     default-page-size: 10
