@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import com.health.healthlog.config.SecurityConfig;
+import com.health.healthlog.config.TestSecurityConfig;
 import com.health.healthlog.domain.type.SearchType;
 import com.health.healthlog.dto.ArticleWithTrainingsDto;
 import com.health.healthlog.service.ArticleService;
@@ -28,10 +29,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
-@Import(SecurityConfig.class)
+@Import({TestSecurityConfig.class})
 @WebMvcTest(ArticleController.class)
 public class ArticleControllerTest {
 
@@ -44,6 +46,7 @@ public class ArticleControllerTest {
     @MockBean
     private PaginationService paginationService;
 
+    @WithMockUser
     @DisplayName("[view][GET] 게시글 페이지 - 정상 호출")
     @Test
     void givenNothing_whenRequestingArticleView_thenReturnsArticleView() throws Exception {
