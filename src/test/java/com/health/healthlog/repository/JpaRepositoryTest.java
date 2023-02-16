@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 @DisplayName("JPA 연결 테스트")
 @SpringBootTest
 public class JpaRepositoryTest {
@@ -39,7 +38,7 @@ public class JpaRepositoryTest {
         List<Article> articles = articleRepository.findAll();
 
         //then
-        assertThat(articles).isNotNull().hasSize(2);
+        assertThat(articles).isNotNull().hasSize(6);
     }
 
     @DisplayName("select 테스트")
@@ -52,6 +51,7 @@ public class JpaRepositoryTest {
         assertThat(trainings).isNotNull().hasSize(2);
     }
 
+    @Transactional
     @DisplayName("insert 테스트")
     @Test
     void givenTestData_whenInserting_thenWorksFine() {
@@ -66,6 +66,7 @@ public class JpaRepositoryTest {
         assertThat(articleRepository.count()).isEqualTo(previousCount + 1);
     }
 
+    @Transactional
     @DisplayName("update 테스트")
     @Test
     void givenTestData_whenUpdating_thenWorksFine() {
@@ -80,7 +81,7 @@ public class JpaRepositoryTest {
         // Then
         assertThat(savedArticle).hasFieldOrPropertyWithValue("content", updatedContent);
     }
-
+    @Transactional
     @DisplayName("delete 테스트")
     @Test
     void givenTestData_whenDeleting_thenWorksFine() {
