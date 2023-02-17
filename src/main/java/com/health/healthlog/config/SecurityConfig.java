@@ -25,8 +25,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/",
-                                "/articles",
-                                "/body"
+                                "/articles"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
