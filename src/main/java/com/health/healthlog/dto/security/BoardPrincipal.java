@@ -2,12 +2,14 @@ package com.health.healthlog.dto.security;
 
 import com.health.healthlog.dto.UserAccountDto;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 public record BoardPrincipal(
         String username,
@@ -15,10 +17,16 @@ public record BoardPrincipal(
         Collection<? extends GrantedAuthority> authorities,
         String email,
         String nickname,
-        String memo
-) implements UserDetails {
+        String memo,
+        Map<String, Object> oAuth2Attributes
+) implements UserDetails, OAuth2User {
 
     public static BoardPrincipal of(String username, String password, String email, String nickname, String memo) {
+        return BoardPrincipal.of(username, password, email, nickname, memo, Map.of());
+    }
+
+    public static BoardPrincipal of(String username, String password, String email, String nickname, String memo, Map<String, Object> oAuth2Attributes) {
+        // 지금은 인증만 하고 권한을 다루고 있지 않아서 임의로 세팅한다.
         Set<RoleType> roleTypes = Set.of(RoleType.USER);
 
         return new BoardPrincipal(
@@ -31,7 +39,8 @@ public record BoardPrincipal(
                 ,
                 email,
                 nickname,
-                memo
+                memo,
+                oAuth2Attributes
         );
     }
 
@@ -55,49 +64,27 @@ public record BoardPrincipal(
         );
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
+    @Override public String getUsername() { return username; }
+    @Override public String getPassword() { return password; }
+    @Override public Collection<? extends GrantedAuthority> getAuthorities() { return authorities; }
 
-    @Override
-    public String getUsername() {
-        return username;
-    }
+    @Override public boolean isAccountNonExpired() { return true; }
+    @Override public boolean isAccountNonLocked() { return true; }
+    @Override public boolean isCredentialsNonExpired() { return true; }
+    @Override public boolean isEnabled() { return true; }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+    @Override public Map<String, Object> getAttributes() { return oAuth2Attributes; }
+    @Override public String getName() { return username; }
 
     public enum RoleType {
         USER("ROLE_USER");
 
-        @Getter
-        private final String name;
+        @Getter private final String name;
 
         RoleType(String name) {
             this.name = name;
         }
     }
+
 }
