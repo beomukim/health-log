@@ -2,11 +2,16 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.0.2'
 	id 'io.spring.dependency-management' version '1.1.0'
+	id 'jacoco'
 }
 
 group = 'com.health'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
+
+jacoco {
+	toolVersion = '0.8.5'
+}
 
 repositories {
 	mavenCentral()
@@ -26,6 +31,11 @@ dependencies {
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+}
+
+tasks.withType(Test) {
+	jacoco.includeNoLocationClasses = true
+	jacoco.excludes = ['jdk.internal.*']
 }
 
 tasks.named('test') {
