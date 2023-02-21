@@ -30,10 +30,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
 @Import({TestSecurityConfig.class})
+@ActiveProfiles("test")
 @WebMvcTest(ArticleController.class)
 public class ArticleControllerTest {
 

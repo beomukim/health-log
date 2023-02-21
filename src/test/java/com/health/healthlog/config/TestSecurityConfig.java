@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 import com.health.healthlog.dto.UserAccountDto;
+import com.health.healthlog.repository.UserAccountRepository;
 import com.health.healthlog.service.UserAccountService;
 import java.util.Optional;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -15,6 +16,9 @@ public class TestSecurityConfig {
 
     @MockBean
     private UserAccountService userAccountService;
+
+    @MockBean
+    private UserAccountRepository userAccountRepository;
 
     @BeforeTestMethod
     public void securitySetUp() {

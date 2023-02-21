@@ -12,9 +12,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 @DisplayName("JPA 연결 테스트")
+@ActiveProfiles("test")
 @SpringBootTest
 public class JpaRepositoryTest {
 
@@ -71,7 +73,7 @@ public class JpaRepositoryTest {
     @Test
     void givenTestData_whenUpdating_thenWorksFine() {
         // Given
-        Article article = articleRepository.findById(1L).orElseThrow(EntityNotFoundException::new);
+        Article article = articleRepository.findById(14L).orElseThrow(EntityNotFoundException::new);
         String updatedContent = "this is health log.";
         article.setContent(updatedContent);
 
