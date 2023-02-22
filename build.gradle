@@ -13,6 +13,43 @@ jacoco {
 	toolVersion = '0.8.8'
 }
 
+test {
+	finalizedBy 'jacocoTestReport'
+}
+
+jacocoTestReport {
+	afterEvaluate {
+		classDirectories.setFrom(
+				files(classDirectories.files.collect {
+					fileTree(dir: it, excludes: [
+							'**/*Application*',
+							'**/dto/**'
+					])
+				})
+		)
+	}
+	finalizedBy 'jacocoTestCoverageVerification'
+}
+
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			enabled = true
+			element = 'CLASS'
+
+			limit {
+				counter = 'CLASS'
+				value = 'COVEREDRATIO'
+				minimum = 0.75
+			}
+			excludes = [
+					'*.*Application',
+					'*.dto.*'
+			]
+		}
+	}
+}
+
 repositories {
 	mavenCentral()
 }
