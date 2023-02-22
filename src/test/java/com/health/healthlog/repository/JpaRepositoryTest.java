@@ -35,7 +35,7 @@ public class JpaRepositoryTest {
 
     @DisplayName("select 테스트")
     @Test
-    void whenSelecting_thenWorksFine() {
+    void whenSelectingArticle_thenWorksFine() {
         //when
         List<Article> articles = articleRepository.findAll();
 
@@ -45,10 +45,29 @@ public class JpaRepositoryTest {
 
     @DisplayName("select 테스트")
     @Test
-    void whenSelectingById_thenWorksFine() {
+    void whenSelectingArticleById_thenWorksFine() {
         //when
         Article article = articleRepository.findById(14L).orElseThrow();
         List<Training> trainings = article.getTrainings();
+        //then
+        assertThat(trainings).isNotNull().hasSize(2);
+    }
+
+    @DisplayName("select 테스트")
+    @Test
+    void whenSelectingTraining_thenWorksFine() {
+        //when
+        List<Training> trainings = trainingRepository.findAll();
+
+        //then
+        assertThat(trainings).isNotNull().hasSize(2);
+    }
+
+    @DisplayName("select 테스트")
+    @Test
+    void whenSelectingTrainingById_thenWorksFine() {
+        //when
+        List<Training> trainings = trainingRepository.findByArticle_Id(14L);
         //then
         assertThat(trainings).isNotNull().hasSize(2);
     }
