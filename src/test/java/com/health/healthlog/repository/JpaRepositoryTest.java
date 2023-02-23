@@ -80,7 +80,6 @@ public class JpaRepositoryTest {
         assertThat(trainings).isNotNull().hasSize(2);
     }
 
-    @Transactional
     @DisplayName("insert 테스트")
     @Test
     void givenTestData_whenInserting_thenWorksFine() {
@@ -95,7 +94,6 @@ public class JpaRepositoryTest {
         assertThat(articleRepository.count()).isEqualTo(previousCount + 1);
     }
 
-    @Transactional
     @DisplayName("update 테스트")
     @Test
     void givenTestData_whenUpdating_thenWorksFine() {
@@ -110,7 +108,6 @@ public class JpaRepositoryTest {
         // Then
         assertThat(savedArticle).hasFieldOrPropertyWithValue("content", updatedContent);
     }
-    @Transactional
     @DisplayName("delete 테스트")
     @Test
     void givenTestData_whenDeleting_thenWorksFine() {
