@@ -11,13 +11,21 @@ import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 @DisplayName("JPA 연결 테스트")
+@Import(JpaRepositoryTest.TestJpaConfig.class)
 @ActiveProfiles("test")
-@SpringBootTest
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class JpaRepositoryTest {
 
     private ArticleRepository articleRepository;
@@ -119,5 +127,14 @@ public class JpaRepositoryTest {
         // Then
         assertThat(articleRepository.count()).isEqualTo(previousArticleCount - 1);
         assertThat(trainingRepository.count()).isEqualTo(previousTrainingCommentCount - deletedCommentsSize);
+    }
+
+    @EnableJpaAuditing
+    @TestConfiguration
+    static class TestJpaConfig {
+        @Bean
+        AuditorAware<String> auditorAware() {
+            return () -> Optional.of("beomu");
+        }
     }
 }
