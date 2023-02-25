@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
+import java.io.Serializable;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +17,7 @@ import lombok.ToString;
         @Index(columnList = "email", unique = true)
 })
 @Entity
-public class UserAccount extends BaseTimeEntity {
+public class UserAccount extends BaseTimeEntity implements Serializable {
     @Id
     @Column(length = 50)
     private String userId;

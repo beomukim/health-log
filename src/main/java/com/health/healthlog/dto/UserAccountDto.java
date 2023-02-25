@@ -1,6 +1,7 @@
 package com.health.healthlog.dto;
 
 import com.health.healthlog.domain.UserAccount;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public record UserAccountDto(
@@ -11,7 +12,7 @@ public record UserAccountDto(
         String memo,
         LocalDateTime createdAt,
         LocalDateTime modifiedAt
-) {
+) implements Serializable {
 
     public static UserAccountDto of(String userId, String userPassword, String email, String nickname, String memo) {
         return new UserAccountDto(userId, userPassword, email, nickname, memo, null, null);

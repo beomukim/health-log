@@ -1,6 +1,7 @@
 package com.health.healthlog.dto.security;
 
 import com.health.healthlog.dto.UserAccountDto;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -19,7 +20,7 @@ public record BoardPrincipal(
         String nickname,
         String memo,
         Map<String, Object> oAuth2Attributes
-) implements UserDetails, OAuth2User {
+) implements UserDetails, OAuth2User, Serializable {
 
     public static BoardPrincipal of(String username, String password, String email, String nickname, String memo) {
         return BoardPrincipal.of(username, password, email, nickname, memo, Map.of());
