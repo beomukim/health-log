@@ -17,7 +17,7 @@ import lombok.ToString;
         @Index(columnList = "email", unique = true)
 })
 @Entity
-public class UserAccount extends BaseTimeEntity implements Serializable {
+public class UserAccount extends BaseTimeEntity {
     @Id
     @Column(length = 50)
     private String userId;

@@ -12,7 +12,7 @@ public record UserAccountDto(
         String memo,
         LocalDateTime createdAt,
         LocalDateTime modifiedAt
-) implements Serializable {
+) {
 
     public static UserAccountDto of(String userId, String userPassword, String email, String nickname, String memo) {
         return new UserAccountDto(userId, userPassword, email, nickname, memo, null, null);
