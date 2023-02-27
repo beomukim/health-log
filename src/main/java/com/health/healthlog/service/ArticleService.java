@@ -5,6 +5,7 @@ import com.health.healthlog.domain.UserAccount;
 import com.health.healthlog.domain.type.SearchType;
 import com.health.healthlog.dto.ArticleDto;
 import com.health.healthlog.dto.ArticleWithTrainingsDto;
+import com.health.healthlog.exception.NoSuchArticleException;
 import com.health.healthlog.repository.ArticleRepository;
 import com.health.healthlog.repository.UserAccountRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -38,14 +39,14 @@ public class ArticleService {
     public ArticleDto searchArticle(long articleId) {
         return articleRepository.findById(articleId)
                 .map(ArticleDto::from)
-                .orElseThrow(() -> new EntityNotFoundException("게시글이 없습니다 - articleId: " + articleId));
+                .orElseThrow(() -> new NoSuchArticleException(articleId));
     }
 
     @Transactional(readOnly = true)
     public ArticleWithTrainingsDto getArticleWithTrainings(Long articleId) {
         return articleRepository.findById(articleId)
                 .map(ArticleWithTrainingsDto::from)
-                .orElseThrow(() -> new EntityNotFoundException("게시글이 없습니다 - articleId: " + articleId));
+                .orElseThrow(() -> new NoSuchArticleException(articleId));
     }
 
     public void saveArticle(ArticleDto dto) {
