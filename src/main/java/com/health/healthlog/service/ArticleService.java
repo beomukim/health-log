@@ -5,6 +5,7 @@ import com.health.healthlog.domain.UserAccount;
 import com.health.healthlog.domain.type.SearchType;
 import com.health.healthlog.dto.ArticleDto;
 import com.health.healthlog.dto.ArticleWithTrainingsDto;
+import com.health.healthlog.exception.InvalidArticleException;
 import com.health.healthlog.exception.NoSuchArticleException;
 import com.health.healthlog.repository.ArticleRepository;
 import com.health.healthlog.repository.UserAccountRepository;
@@ -16,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -64,8 +64,8 @@ public class ArticleService {
                     article.setContent(dto.content());
                 }
             }
-        } catch (EntityNotFoundException e) {
-            log.warn("게시글 업데이트 실패. 게시글을 수정하는데 필요한 정보를 찾을 수 없습니다 - {}", e.getLocalizedMessage());
+        } catch (NullPointerException e) {
+            throw new InvalidArticleException(e.getMessage());
         }
     }
 
