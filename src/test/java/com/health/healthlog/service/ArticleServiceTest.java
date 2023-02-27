@@ -1,6 +1,7 @@
 package com.health.healthlog.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -11,6 +12,7 @@ import com.health.healthlog.domain.UserAccount;
 import com.health.healthlog.dto.ArticleDto;
 import com.health.healthlog.dto.ArticleWithTrainingsDto;
 import com.health.healthlog.dto.UserAccountDto;
+import com.health.healthlog.exception.NoSuchArticleException;
 import com.health.healthlog.repository.ArticleRepository;
 import com.health.healthlog.repository.UserAccountRepository;
 import java.time.LocalDateTime;
@@ -66,9 +68,30 @@ public class ArticleServiceTest {
         assertThat(article).isNotNull().isEqualTo(articleDto);
     }
 
+    @DisplayName("게시글이 존재하지 않는 경우, 예외를 던진다.")
+    @Test
+    void givenWrongArticleId_whenFindAriticle_thenThrowNoSuchArticleException() {
+        // Given
+        Long id = -1L;
+
+        // When & Then
+        assertThatThrownBy(() -> sut.searchArticle(id)).isInstanceOf(NoSuchArticleException.class);
+    }
+
+    @DisplayName("게시글이 존재하지 않는 경우, 예외를 던진다.")
+    @Test
+    void givenWrongArticleId_whenFindAriticleWithTraining_thenThrowNoSuchArticleException() {
+        // Given
+        Long id = -1L;
+
+        // When & Then
+        assertThatThrownBy(() -> sut.getArticleWithTrainings(id)).isInstanceOf(NoSuchArticleException.class);
+    }
+
     @DisplayName("게시글 정보를 입력하면, 게시글을 생성한다")
     @Test
     void givenArticleInfo_whenSavingArticle_thenSavesArticle() {
+
         // Given
         given(articleRepository.save(any(Article.class))).willReturn(null);
 
