@@ -12,6 +12,7 @@ import com.health.healthlog.domain.UserAccount;
 import com.health.healthlog.dto.ArticleDto;
 import com.health.healthlog.dto.ArticleWithTrainingsDto;
 import com.health.healthlog.dto.UserAccountDto;
+import com.health.healthlog.exception.InvalidArticleException;
 import com.health.healthlog.exception.NoSuchArticleException;
 import com.health.healthlog.repository.ArticleRepository;
 import com.health.healthlog.repository.UserAccountRepository;
@@ -119,6 +120,16 @@ public class ArticleServiceTest {
                 .hasFieldOrPropertyWithValue("content", dto.content());
         then(articleRepository).should().getReferenceById(dto.id());
         then(userAccountRepository).should().getReferenceById(dto.userAccountDto().userId());
+    }
+
+    @DisplayName("잘못된 게시글의 ID와 수정 정보를 입력하면, 예외를 던진다")
+    @Test
+    void givenWrongArticleInfo_whenUpdatingArticle_thenThrowsInvalidArticleException() {
+        // Given
+        ArticleDto dto = new ArticleDto(-1L, createUserAccountDto(), "새 내용", LocalDateTime.now());
+
+        // When &Then
+        assertThatThrownBy(() -> sut.updateArticle(dto.id(), dto)).isInstanceOf(InvalidArticleException.class);
     }
 
     @DisplayName("게시글의 ID를 입력하면, 게시글을 삭제한다")
