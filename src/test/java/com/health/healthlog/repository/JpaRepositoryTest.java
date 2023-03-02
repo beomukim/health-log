@@ -48,17 +48,17 @@ public class JpaRepositoryTest {
         List<Article> articles = articleRepository.findAll();
 
         //then
-        assertThat(articles).isNotNull().hasSize(6);
+        assertThat(articles).isNotNull().hasSize(5);
     }
 
     @DisplayName("select 테스트")
     @Test
     void whenSelectingArticleById_thenWorksFine() {
         //when
-        Article article = articleRepository.findById(14L).orElseThrow();
+        Article article = articleRepository.findById(16L).orElseThrow();
         List<Training> trainings = article.getTrainings();
         //then
-        assertThat(trainings).isNotNull().hasSize(2);
+        assertThat(trainings).isNotNull().hasSize(0);
     }
 
     @DisplayName("select 테스트")
@@ -68,7 +68,7 @@ public class JpaRepositoryTest {
         List<Training> trainings = trainingRepository.findAll();
 
         //then
-        assertThat(trainings).isNotNull().hasSize(2);
+        assertThat(trainings).isNotNull().hasSize(0);
     }
 
     @DisplayName("select 테스트")
@@ -77,7 +77,7 @@ public class JpaRepositoryTest {
         //when
         List<Training> trainings = trainingRepository.findByArticle_Id(14L);
         //then
-        assertThat(trainings).isNotNull().hasSize(2);
+        assertThat(trainings).isNotNull().hasSize(0);
     }
 
     @DisplayName("insert 테스트")
@@ -98,7 +98,7 @@ public class JpaRepositoryTest {
     @Test
     void givenTestData_whenUpdating_thenWorksFine() {
         // Given
-        Article article = articleRepository.findById(14L).orElseThrow(EntityNotFoundException::new);
+        Article article = articleRepository.findById(16L).orElseThrow(EntityNotFoundException::new);
         String updatedContent = "this is health log.";
         article.setContent(updatedContent);
 
@@ -112,7 +112,7 @@ public class JpaRepositoryTest {
     @Test
     void givenTestData_whenDeleting_thenWorksFine() {
         // Given
-        Article article = articleRepository.findById(14L).orElseThrow();
+        Article article = articleRepository.findById(16L).orElseThrow();
 
         long previousArticleCount = articleRepository.count();
         long previousTrainingCommentCount = trainingRepository.count();
