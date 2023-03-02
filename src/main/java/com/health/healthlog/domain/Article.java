@@ -24,7 +24,7 @@ public class Article extends BaseTimeEntity {
     private Long id;
 
     @OrderBy("id")
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private final List<Training> trainings = new ArrayList<>();
 
     @ManyToOne(optional = false)
