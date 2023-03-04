@@ -1,5 +1,6 @@
 package com.health.healthlog.controller;
 
+import com.health.healthlog.aop.LogExecutionTime;
 import com.health.healthlog.domain.type.SearchType;
 import com.health.healthlog.dto.ArticleDto;
 import com.health.healthlog.dto.ArticleWithTrainingsDto;
@@ -27,6 +28,7 @@ public class ArticleController {
     private final ArticleService articleService;
     private final PaginationService paginationService;
 
+    @LogExecutionTime
     @GetMapping
     public String articles(
             @RequestParam(required = false) SearchType searchType,
