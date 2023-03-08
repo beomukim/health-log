@@ -7,6 +7,6 @@ Spring Boot
 * Spring Web
 * Spring Security
 * Spring Data JPA
-* Spring Data Rest
+* Spring Data Redis
 * Thymeleaf
 * MySQL 
