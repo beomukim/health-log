@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
+import jakarta.persistence.Version;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -29,6 +30,9 @@ public class Article extends BaseTimeEntity {
 
     @ManyToOne(optional = false)
     private UserAccount userAccount;
+
+    @Version
+    private Long version;
 
     @Setter
     private String content;

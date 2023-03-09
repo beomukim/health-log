@@ -5,6 +5,7 @@ import com.health.healthlog.domain.UserAccount;
 import com.health.healthlog.domain.type.SearchType;
 import com.health.healthlog.dto.ArticleDto;
 import com.health.healthlog.dto.ArticleWithTrainingsDto;
+import com.health.healthlog.exception.ArticleConcurrencyException;
 import com.health.healthlog.exception.InvalidArticleException;
 import com.health.healthlog.exception.NoSuchArticleException;
 import com.health.healthlog.repository.ArticleRepository;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,6 +68,8 @@ public class ArticleService {
             }
         } catch (NullPointerException e) {
             throw new InvalidArticleException(e.getMessage());
+        } catch (ObjectOptimisticLockingFailureException e) {
+            throw new ArticleConcurrencyException(e.getMessage());
         }
     }
 
