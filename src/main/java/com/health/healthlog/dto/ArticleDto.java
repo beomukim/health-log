@@ -26,6 +26,10 @@ public record ArticleDto(
                 article.getCreatedAt());
     }
 
+    public static ArticleDto of(UserAccountDto userAccountDto, String title, String content) {
+        return new ArticleDto(null, userAccountDto, content, null);
+    }
+
     public Article toEntity(UserAccount userAccount) {
         return Article.of(userAccount, content);
     }

@@ -11,6 +11,7 @@ import com.health.healthlog.exception.NoSuchArticleException;
 import com.health.healthlog.repository.ArticleRepository;
 import com.health.healthlog.repository.UserAccountRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -56,12 +57,13 @@ public class ArticleService {
         articleRepository.save(dto.toEntity(userAccount));
     }
 
+    @Transactional
     public void updateArticle(long articleId, ArticleDto dto) {
         try {
             Article article = articleRepository.getReferenceById(articleId);
             UserAccount userAccount = userAccountRepository.getReferenceById(dto.userAccountDto().userId());
 
-            if (article.getUserAccount().equals(userAccount)) {
+            if (Objects.equals(article.getUserAccount(), userAccount)) {
                 if (dto.content() != null) {
                     article.setContent(dto.content());
                 }
@@ -75,5 +77,12 @@ public class ArticleService {
 
     public void deleteArticle(long articleId, String userId) {
         articleRepository.deleteByIdAndUserAccount_UserId(articleId, userId);
+    }
+
+    @Transactional(readOnly = true)
+    public ArticleDto getArticle(Long articleId) {
+        return articleRepository.findById(articleId)
+                .map(ArticleDto::from)
+                .orElseThrow(() -> new EntityNotFoundException("게시글이 없습니다 - articleId: " + articleId));
     }
 }
