@@ -15,6 +15,7 @@ import com.health.healthlog.config.SecurityConfig;
 import com.health.healthlog.config.TestSecurityConfig;
 import com.health.healthlog.domain.type.SearchType;
 import com.health.healthlog.dto.ArticleWithTrainingsDto;
+import com.health.healthlog.dto.UserAccountDto;
 import com.health.healthlog.service.ArticleService;
 import com.health.healthlog.service.PaginationService;
 import java.time.LocalDateTime;
@@ -62,15 +63,28 @@ public class ArticleControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("articles/detail"))
                 .andExpect(model().attributeExists("article"))
-                .andExpect(model().attributeExists("articleTrainings"));
+                .andExpect(model().attributeExists("trainings"));
         then(articleService).should().getArticleWithTrainings(articleId);
     }
 
     private ArticleWithTrainingsDto createArticleWithTrainingsDto() {
         return new ArticleWithTrainingsDto(
                 1L,
+                createUserAccountDto(),
                 List.of(),
                 "content",
+                LocalDateTime.now()
+        );
+    }
+
+    private UserAccountDto createUserAccountDto() {
+        return UserAccountDto.of(
+                "beomu",
+                "password",
+                "beomu@email.com",
+                "beomu",
+                "This is memo",
+                LocalDateTime.now(),
                 LocalDateTime.now()
         );
     }

@@ -2,22 +2,34 @@ package com.health.healthlog.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.BDDMockito.willThrow;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
 
 import com.health.healthlog.domain.Article;
 import com.health.healthlog.domain.UserAccount;
 import com.health.healthlog.dto.ArticleDto;
 import com.health.healthlog.dto.ArticleWithTrainingsDto;
 import com.health.healthlog.dto.UserAccountDto;
+import com.health.healthlog.exception.ArticleConcurrencyException;
 import com.health.healthlog.exception.InvalidArticleException;
 import com.health.healthlog.exception.NoSuchArticleException;
 import com.health.healthlog.repository.ArticleRepository;
 import com.health.healthlog.repository.UserAccountRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,6 +39,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.test.util.ReflectionTestUtils;
 
 @DisplayName("비즈니스 로직 -게시글")
@@ -108,9 +121,10 @@ public class ArticleServiceTest {
     void givenModifiedArticleInfo_whenUpdatingArticle_thenUpdatesArticle() {
         // Given
         Article article = createArticle(); // createUserAccount
-        ArticleDto dto = createArticleDto( "새 내용"); // createUserAccountDto
+        ArticleDto dto = createArticleDto("새 내용"); // createUserAccountDto
         given(articleRepository.getReferenceById(dto.id())).willReturn(article);
-        given(userAccountRepository.getReferenceById(dto.userAccountDto().userId())).willReturn(dto.userAccountDto().toEntity());
+        given(userAccountRepository.getReferenceById(dto.userAccountDto().userId())).willReturn(
+                dto.userAccountDto().toEntity());
 
         // When
         sut.updateArticle(dto.id(), dto);
@@ -164,6 +178,17 @@ public class ArticleServiceTest {
         then(articleRepository).should().findById(articleId);
     }
 
+    @DisplayName("동시성 문제가 발생하는 상황 테스트")
+    @Test
+    public void testArticleConcurrencyException() {
+        ArticleDto articleDto = createArticleDto("test");
+        doThrow(ObjectOptimisticLockingFailureException.class)
+                .when(articleRepository).getReferenceById(anyLong());
+
+        assertThrows(ArticleConcurrencyException.class,
+                () -> sut.updateArticle(1L, articleDto));
+    }
+
     private UserAccount createUserAccount() {
         return UserAccount.of(
                 "beomu",
@@ -177,6 +202,7 @@ public class ArticleServiceTest {
     private Article createArticle() {
         Article article = Article.of(createUserAccount(), "content");
         ReflectionTestUtils.setField(article, "id", 1L);
+        ReflectionTestUtils.setField(article, "version", 0L);
         return article;
     }
 

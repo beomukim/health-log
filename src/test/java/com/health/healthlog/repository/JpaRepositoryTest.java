@@ -1,10 +1,14 @@
 package com.health.healthlog.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.times;
 
 import com.health.healthlog.domain.Article;
 import com.health.healthlog.domain.Training;
 import com.health.healthlog.domain.UserAccount;
+import com.health.healthlog.dto.ArticleDto;
+import com.health.healthlog.service.ArticleService;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +23,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 @DisplayName("JPA 연결 테스트")
 @Import(JpaRepositoryTest.TestJpaConfig.class)
@@ -35,7 +38,8 @@ public class JpaRepositoryTest {
     public JpaRepositoryTest(
             @Autowired ArticleRepository articleRepository,
             @Autowired TrainingRepository trainingRepository,
-            @Autowired UserAccountRepository userAccountRepository) {
+            @Autowired UserAccountRepository userAccountRepository
+    ) {
         this.articleRepository = articleRepository;
         this.trainingRepository = trainingRepository;
         this.userAccountRepository = userAccountRepository;
